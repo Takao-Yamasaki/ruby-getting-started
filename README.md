@@ -9,6 +9,32 @@ This application supports the tutorials for both the [Cedar and Fir generations]
 
 ## Running Locally
 
+### With Docker (Recommended)
+
+Make sure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+
+```bash
+$ git clone https://github.com/heroku/ruby-getting-started
+$ cd ruby-getting-started
+$ docker compose up --build
+```
+
+In another terminal, create the database:
+
+```bash
+$ docker compose exec app bundle exec rake db:create db:migrate
+```
+
+Your app should now be running on [localhost:3000](http://localhost:3000/).
+
+To stop the containers:
+
+```bash
+$ docker compose down
+```
+
+### Without Docker
+
 Make sure you have [Ruby](https://guides.railsgirls.com/install) and the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed.
 
 ```text
