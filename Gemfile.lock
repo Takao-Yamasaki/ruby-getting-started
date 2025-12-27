@@ -115,9 +115,10 @@ GEM
       net-smtp
     marcel (1.1.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (5.25.5)
     msgpack (1.8.0)
+    mysql2 (0.5.7)
+      bigdecimal
     net-imap (0.5.11)
       date
       net-protocol
@@ -128,16 +129,10 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.5)
-    nokogiri (1.18.10)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
-    pg (1.6.2)
-    pg (1.6.2-aarch64-linux)
-    pg (1.6.2-x86_64-linux)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -220,14 +215,13 @@ GEM
 
 PLATFORMS
   aarch64-linux
-  ruby
   x86_64-linux
 
 DEPENDENCIES
   bootsnap
   importmap-rails
   listen
-  pg (~> 1.6.1)
+  mysql2 (~> 0.5)
   propshaft
   puma (>= 7.0)
   rack-timeout (~> 0.7.0)

@@ -1,18 +1,19 @@
 services:
   db:
-    image: postgres
+    image: mysql:8.0
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ruby-getting-started_development
     volumes:
-      - postgres_volume:/var/lib/postgresql
+      - mysql_volume:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
   app:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
-      POSTGRES_HOST: db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      DB_HOST: db
+      DB_USERNAME: root
+      DB_PASSWORD: password
     volumes:
       - .:/app
     ports:
@@ -23,4 +24,4 @@ services:
     depends_on:
       - db
 volumes:
-  postgres_volume: {}
+  mysql_volume: {}

@@ -1,6 +1,13 @@
 # Ruby Getting Started
 
-A barebones [Ruby on Rails](https://rubyonrails.org/) app, which can easily be deployed to Heroku.
+A barebones [Ruby on Rails](https://rubyonrails.org/) app with MySQL database, which can be run locally with Docker or deployed to Heroku.
+
+## Technology Stack
+
+- Ruby 3.4
+- Rails 8.0.3
+- MySQL 8.0
+- Docker & Docker Compose
 
 This application supports the tutorials for both the [Cedar and Fir generations](https://devcenter.heroku.com/articles/generations) of the Heroku platform. You can check them out here:
 
@@ -11,37 +18,89 @@ This application supports the tutorials for both the [Cedar and Fir generations]
 
 ### With Docker (Recommended)
 
-Make sure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+This setup uses Docker Compose to run Rails with MySQL 8.0.
 
+Prerequisites:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+Steps:
+
+1. Clone the repository:
 ```bash
 $ git clone https://github.com/heroku/ruby-getting-started
 $ cd ruby-getting-started
+```
+
+2. Start the containers:
+```bash
 $ docker compose up --build
 ```
 
-In another terminal, create the database:
-
+3. In another terminal, create and migrate the database:
 ```bash
 $ docker compose exec app bundle exec rake db:create db:migrate
 ```
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
-To stop the containers:
+#### Useful Docker Commands
 
+Stop the containers:
 ```bash
 $ docker compose down
 ```
 
+Stop and remove volumes (removes all database data):
+```bash
+$ docker compose down -v
+```
+
+View logs:
+```bash
+$ docker compose logs app
+$ docker compose logs db
+```
+
+Access Rails console:
+```bash
+$ docker compose exec app bundle exec rails console
+```
+
 ### Without Docker
 
-Make sure you have [Ruby](https://guides.railsgirls.com/install) and the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) installed.
+Prerequisites:
+- [Ruby 3.4+](https://guides.railsgirls.com/install)
+- [MySQL 8.0](https://dev.mysql.com/downloads/mysql/)
+- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
-```text
+Steps:
+
+1. Clone the repository:
+```bash
 $ git clone https://github.com/heroku/ruby-getting-started
 $ cd ruby-getting-started
+```
+
+2. Install dependencies:
+```bash
 $ bundle install
+```
+
+3. Configure database connection (set environment variables):
+```bash
+$ export DB_HOST=localhost
+$ export DB_USERNAME=root
+$ export DB_PASSWORD=your_mysql_password
+```
+
+4. Create and migrate the database:
+```bash
 $ bundle exec rake db:create db:migrate
+```
+
+5. Start the server:
+```bash
 $ heroku local
 ```
 
