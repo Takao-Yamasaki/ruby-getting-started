@@ -14,6 +14,11 @@ services:
       DB_HOST: db
       DB_USERNAME: root
       DB_PASSWORD: password
+      # appがdatadogライブラリを初期化する時に使用
+      DATADOG_HOST: datadog
+      # トレース送信先としてdd-agentを指定。
+      # dd-agentコンテナの両方で同じ値にする必要がある
+      DD_AGENT_HOST: dd-agent
     volumes:
       - .:/app
     ports:
@@ -23,5 +28,24 @@ services:
     stdin_open: true
     depends_on:
       - db
+      - datadog
+  datadog:
+    container_name: dd-agent
+    build: datadog
+    environment:
+      DD_API_KEY: ${DD_API_KEY}
+      # 他コンテナからのカスタムメトリクスをAgentが受信できるようにする
+      DD_DOGSTATSD_NON_LOCAL_TRAFFIC: true
+      # トレースを有効化
+      DD_APM_ENABLED: true
+      # 他コンテナからのトレースをAgentが受信できるようにする
+      DD_APM_NON_LOCAL_TRAFFIC: true
+      # appコンテナがAgentに転送できるようにする
+      DD_AGENT_HOST: dd-agent
+      DD_SITE: datadoghq.com
+    volumes:
+      - /var/run/datadog.sock:/var/run/docker.sock
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 volumes:
   mysql_volume: {}
