@@ -14,5 +14,5 @@ COPY . /app
 
 # DDタグの設定
 ENV DD_SERVICE app
-ENV DD_ENV sandbox
+ENV DD_ENV dev
 ENV DD_VERSION 1.0
