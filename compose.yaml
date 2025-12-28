@@ -53,7 +53,7 @@ services:
 
 secrets:
   dd_api_key:
-    file: dd_api_key.txt
+    file: datadog/dd_api_key.txt
 
 volumes:
   mysql_volume: {}
