@@ -1,116 +1,179 @@
 # Ruby Getting Started
 
-A barebones [Ruby on Rails](https://rubyonrails.org/) app with MySQL database, which can be run locally with Docker or deployed to Heroku.
+MySQL データベースを使用したシンプルな [Ruby on Rails](https://rubyonrails.org/) アプリケーションです。Docker でローカル実行、または Heroku にデプロイできます。
 
-## Technology Stack
+## 技術スタック
 
 - Ruby 3.4
 - Rails 8.0.3
 - MySQL 8.0
 - Docker & Docker Compose
+- Datadog APM & Monitoring
 
-This application supports the tutorials for both the [Cedar and Fir generations](https://devcenter.heroku.com/articles/generations) of the Heroku platform. You can check them out here:
+このアプリケーションは、Heroku プラットフォームの [Cedar および Fir 世代](https://devcenter.heroku.com/articles/generations) の両方のチュートリアルをサポートしています。以下を参照してください:
 
 - [Getting Started on Heroku with Ruby](https://devcenter.heroku.com/articles/getting-started-with-ruby)
 - [Getting Started on Heroku Fir with Ruby](https://devcenter.heroku.com/articles/getting-started-with-ruby-fir)
 
-## Running Locally
+## ローカルでの実行
 
-### With Docker (Recommended)
+### Docker を使用する場合（推奨）
 
-This setup uses Docker Compose to run Rails with MySQL 8.0.
+このセットアップでは、Docker Compose を使用して Rails と MySQL 8.0 を実行します。
 
-Prerequisites:
+前提条件:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-Steps:
+手順:
 
-1. Clone the repository:
+1. リポジトリをクローンします:
 ```bash
 $ git clone https://github.com/heroku/ruby-getting-started
 $ cd ruby-getting-started
 ```
 
-2. Start the containers:
+2. 環境変数をセットアップします:
+```bash
+$ cp .env.sample .env
+```
+
+`.env` を編集して Datadog API キーを設定します:
+```
+DD_API_KEY=your_datadog_api_key_here
+```
+
+Datadog API キーの取得方法:
+- [Datadog](https://app.datadoghq.com/) にログイン
+- Organization Settings → API Keys に移動
+- 既存のキーをコピーするか、新しいキーを作成
+
+3. コンテナを起動します:
 ```bash
 $ docker compose up --build
 ```
 
-3. In another terminal, create and migrate the database:
+4. 別のターミナルで、データベースを作成してマイグレーションを実行します:
 ```bash
 $ docker compose exec app bundle exec rake db:create db:migrate
 ```
 
-Your app should now be running on [localhost:3000](http://localhost:3000/).
+アプリケーションが [localhost:3000](http://localhost:3000/) で起動します。
 
-#### Useful Docker Commands
+Datadog エージェントが自動的にメトリクス、トレース、ログの収集を開始します。
 
-Stop the containers:
+#### 便利な Docker コマンド
+
+コンテナを停止:
 ```bash
 $ docker compose down
 ```
 
-Stop and remove volumes (removes all database data):
+コンテナを停止してボリュームを削除（すべてのデータベースデータを削除）:
 ```bash
 $ docker compose down -v
 ```
 
-View logs:
+ログを表示:
 ```bash
 $ docker compose logs app
 $ docker compose logs db
+$ docker compose logs datadog
 ```
 
-Access Rails console:
+Rails コンソールにアクセス:
 ```bash
 $ docker compose exec app bundle exec rails console
 ```
 
-### Without Docker
+Datadog エージェントのステータスを確認:
+```bash
+$ docker compose exec datadog agent status
+```
 
-Prerequisites:
+### Docker を使用しない場合
+
+前提条件:
 - [Ruby 3.4+](https://guides.railsgirls.com/install)
 - [MySQL 8.0](https://dev.mysql.com/downloads/mysql/)
 - [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
-Steps:
+手順:
 
-1. Clone the repository:
+1. リポジトリをクローンします:
 ```bash
 $ git clone https://github.com/heroku/ruby-getting-started
 $ cd ruby-getting-started
 ```
 
-2. Install dependencies:
+2. 依存関係をインストールします:
 ```bash
 $ bundle install
 ```
 
-3. Configure database connection (set environment variables):
+3. データベース接続を設定します（環境変数を設定）:
 ```bash
 $ export DB_HOST=localhost
 $ export DB_USERNAME=root
 $ export DB_PASSWORD=your_mysql_password
 ```
 
-4. Create and migrate the database:
+4. データベースを作成してマイグレーションを実行します:
 ```bash
 $ bundle exec rake db:create db:migrate
 ```
 
-5. Start the server:
+5. サーバーを起動します:
 ```bash
 $ heroku local
 ```
 
-Your app should now be running on [localhost:5006](http://localhost:5006/).
+アプリケーションが [localhost:5006](http://localhost:5006/) で起動します。
 
-## Deploying to Heroku
+## Datadog 連携
 
-Using resources for this example app counts towards your usage. [Delete your app](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-apps-destroy) and [database](https://devcenter.heroku.com/articles/heroku-postgresql#removing-the-add-on) as soon as you are done experimenting to control costs.
+このアプリケーションには、APM（Application Performance Monitoring）、メトリクス収集、分散トレーシングのための Datadog が含まれています。
 
-Ensure you're in the correct directory:
+### 機能
+
+- **APM & 分散トレーシング**: アプリケーションパフォーマンスの監視とサービス間のリクエストトレース
+- **インフラストラクチャ監視**: Docker コンテナのメトリクス、CPU、メモリ使用量の追跡
+- **ログ管理**: すべてのコンテナからの集中ログ管理
+- **カスタムメトリクス**: DogStatsD を使用したカスタムメトリクスの送信
+
+### 設定
+
+Datadog エージェントは `compose.yaml` の環境変数で設定されています:
+
+- `DD_API_KEY`: Datadog API キー（`.env` ファイルで設定）
+- `DD_SITE`: Datadog サイト（アジア太平洋リージョンは `ap1.datadoghq.com`）
+- `DD_APM_ENABLED`: APM と分散トレーシングを有効化
+- `DD_DOGSTATSD_NON_LOCAL_TRAFFIC`: 他のコンテナからのメトリクス受信を許可
+- `DD_APM_NON_LOCAL_TRAFFIC`: 他のコンテナからのトレース受信を許可
+
+### Datadog でのデータ表示
+
+アプリケーション起動後、Datadog ダッシュボードでメトリクスとトレースを確認できます:
+
+1. [Datadog](https://app.datadoghq.com/) にログイン
+2. 以下に移動:
+   - **APM → Services**: アプリケーショントレース
+   - **Infrastructure → Containers**: Docker メトリクス
+   - **Logs**: 集中ログ
+
+### セキュリティに関する注意
+
+⚠️ **重要**: Datadog API キーをバージョン管理にコミットしないでください。
+
+- `.env` ファイルは `.gitignore` に含まれています
+- 必要な環境変数のテンプレートとして `.env.sample` を使用してください
+- 機密情報には必ず環境変数を使用してください
+
+## Heroku へのデプロイ
+
+このサンプルアプリのリソース使用は利用量にカウントされます。実験が終わったらすぐに[アプリを削除](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-apps-destroy)し、[データベースを削除](https://devcenter.heroku.com/articles/heroku-postgresql#removing-the-add-on)してコストを管理してください。
+
+正しいディレクトリにいることを確認してください:
 
 ```console
 $ ls -1
@@ -133,11 +196,11 @@ tmp
 vendor
 ```
 
-### Deploy on Heroku [Cedar](https://devcenter.heroku.com/articles/generations#cedar)
+### Heroku [Cedar](https://devcenter.heroku.com/articles/generations#cedar) へのデプロイ
 
-By default, apps use Eco dynos if you are subscribed to Eco. Otherwise, it defaults to Basic dynos. The Eco dynos plan is shared across all Eco dynos in your account and is recommended if you plan on deploying many small apps to Heroku. Learn more about our low-cost plans [here](https://blog.heroku.com/new-low-cost-plans).
+デフォルトでは、Eco プランに登録している場合は Eco dyno を使用します。そうでない場合は、Basic dyno がデフォルトになります。Eco dyno プランはアカウント内のすべての Eco dyno で共有され、多くの小規模アプリを Heroku にデプロイする予定がある場合に推奨されます。低コストプランの詳細については[こちら](https://blog.heroku.com/new-low-cost-plans)をご覧ください。
 
-Eligible students can apply for platform credits through our new [Heroku for GitHub Students program](https://blog.heroku.com/github-student-developer-program).
+対象となる学生は、新しい [Heroku for GitHub Students プログラム](https://blog.heroku.com/github-student-developer-program)を通じてプラットフォームクレジットを申請できます。
 
 ```text
 $ heroku create
@@ -145,11 +208,9 @@ $ git push heroku main
 $ heroku open
 ```
 
-### Deploy on Heroku [Fir](https://devcenter.heroku.com/articles/generations#fir)
+### Heroku [Fir](https://devcenter.heroku.com/articles/generations#fir) へのデプロイ
 
-By default, apps on [Fir](https://devcenter.heroku.com/articles/generations#fir) use 1X-Classic dynos. To create an app on [Fir](https://devcenter.heroku.com/articles/generations#fir) you'll need to
-[create a private space](https://devcenter.heroku.com/articles/working-with-private-spaces#create-a-private-space)
-first.
+デフォルトでは、[Fir](https://devcenter.heroku.com/articles/generations#fir) 上のアプリは 1X-Classic dyno を使用します。[Fir](https://devcenter.heroku.com/articles/generations#fir) にアプリを作成するには、まず[プライベートスペースを作成](https://devcenter.heroku.com/articles/working-with-private-spaces#create-a-private-space)する必要があります。
 
 ```text
 $ heroku create --space <space-name>
@@ -158,9 +219,9 @@ $ heroku ps:wait
 $ heroku open
 ```
 
-## Documentation
+## ドキュメント
 
-For more information about using Ruby on Heroku, see these Dev Center articles:
+Heroku での Ruby の使用に関する詳細情報については、以下の Dev Center の記事を参照してください:
 
 - [Getting Started on Heroku with Ruby](https://devcenter.heroku.com/articles/getting-started-with-ruby)
 - [Getting Started on Heroku Fir with Ruby](https://devcenter.heroku.com/articles/getting-started-with-ruby-fir)
