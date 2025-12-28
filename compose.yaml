@@ -33,7 +33,7 @@ services:
     container_name: dd-agent
     build: datadog
     environment:
-      DD_API_KEY: /run/secrets/dd_api_key
+      DD_API_KEY: ${DD_API_KEY}
       # 他コンテナからのカスタムメトリクスをAgentが受信できるようにする
       DD_DOGSTATSD_NON_LOCAL_TRAFFIC: true
       # トレースを有効化
@@ -43,17 +43,11 @@ services:
       # appコンテナがAgentに転送できるようにする
       DD_AGENT_HOST: dd-agent
       DD_SITE: ap1.datadoghq.com
-    secrets:
-      - dd_api_key
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
-
-secrets:
-  dd_api_key:
-    file: datadog/dd_api_key.txt
 
 volumes:
   mysql_volume: {}
