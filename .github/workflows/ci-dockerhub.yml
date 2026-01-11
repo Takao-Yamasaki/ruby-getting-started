@@ -20,12 +20,12 @@ jobs:
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v6
-          with:
-            context: ./
-            file: ./docker/prod/Dockerfile
-            push: true
-            tags: captainkaeru/ruby-getting-started-app-prod:latest
+        with:
+          context: ./
+          file: ./docker/prod/Dockerfile
+          push: true
+          tags: captainkaeru/ruby-getting-started-app-prod:latest
 
-        - name: Image Digest
-          run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Image Digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
