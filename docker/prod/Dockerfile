@@ -12,10 +12,16 @@ RUN bundle install
 
 COPY . /app
 
+# TODO: Datadog導入時にコメントアウト解除
 # DDタグの設定
-ENV DD_SERVICE=app
-ENV DD_ENV=prod
-ENV DD_VERSION=1.0
+# ENV DD_SERVICE=app
+# ENV DD_ENV=prod
+# ENV DD_VERSION=1.0
+
+# 本番環境設定
+ENV RAILS_ENV=production
+ENV RACK_ENV=production
 
 # Railsサーバーを起動
-CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"]
+# HerokuのPORT環境変数を使用し、本番環境で起動
+CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"]
