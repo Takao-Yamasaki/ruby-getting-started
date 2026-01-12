@@ -24,4 +24,4 @@ ENV RACK_ENV=production
 
 # Railsサーバーを起動
 # HerokuのPORT環境変数を使用し、本番環境で起動
-CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"]
+CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rake db:migrate && bundle exec puma -C config/puma.rb"]
