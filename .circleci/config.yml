@@ -11,8 +11,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deployment Completion Notification
-          command: echo "Deployment to production has been completed successfully"
+          name: Notify Build Complete
+          command: echo "Build completed"
 
 workflows:
   deploy-prod:
