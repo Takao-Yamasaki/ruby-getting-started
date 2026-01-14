@@ -8,6 +8,11 @@ jobs:
         auth:
           username: $DOCKERHUB_LOGIN
           password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Deployment Completion Notification
+          command: echo "Deployment to production has been completed successfully"
 
 workflows:
   deploy-prod:
