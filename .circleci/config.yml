@@ -10,8 +10,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.14
+      - setup_remote_docker
       # DockerHubからイメージをプル
       - run:
           name: Pull Docker Image
