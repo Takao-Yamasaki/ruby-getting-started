@@ -10,9 +10,15 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      # DockerHubからイメージをプル
+      - run:
+          name: Pull Docker Image
+          command: docker pull captainkaeru/ruby-getting-started-app-prod:latest
       # Dockerイメージにタグ付けする
       - run:
-          name: Tag Docker Image
+          name: Tag Docker Image for Heroku
           command: docker tag captainkaeru/ruby-getting-started-app-prod:latest registry.heroku.com/ruby-getting-started-app-prod/web
       - run:
           name: Notify Build Complete
