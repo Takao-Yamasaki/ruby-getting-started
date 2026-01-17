@@ -57,7 +57,11 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
+  <% if ENV['JAWSDB_URL'] %>
+  url: <%= ENV['JAWSDB_URL'].sub('mysql://', 'mysql2://') %>
+  <% else %>
   <<: *default
   database: ruby-getting-started_production
   username: ruby-getting-started
   password: <%= ENV['RUBY-GETTING-STARTED_DATABASE_PASSWORD'] %>
+  <% end %>

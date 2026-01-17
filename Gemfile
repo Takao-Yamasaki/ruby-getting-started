@@ -33,5 +33,6 @@ gem 'spring',        group: :development
 # https://devcenter.heroku.com/articles/h12-request-timeout-in-ruby-mri
 gem "rack-timeout", "~> 0.7.0"
 
+# TODO: Datadog導入時にコメントアウト解除
 # Use Datadog
-gem 'ddtrace', require: 'ddtrace/auto_instrument'
+# gem 'ddtrace', require: 'ddtrace/auto_instrument'
