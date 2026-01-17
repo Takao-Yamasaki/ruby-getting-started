@@ -9,13 +9,9 @@ jobs:
           username: $DOCKERHUB_LOGIN
           password: $DOCKERHUB_PASSWORD
     steps:
-      - checkout
-      # DockerHubからイメージをプル
-      - run:
-          name: Pull Docker Image
-          command: docker pull captainkaeru/ruby-getting-started-app-prod:latest
       # TODO: あとからコメント解除する
-      # Dockerイメージにタグ付けする
+      # - checkout
+      ## Dockerイメージにタグ付けする
       # - run:
       #     name: Tag Docker Image for Heroku
       #     command: docker tag captainkaeru/ruby-getting-started-app-prod:latest registry.heroku.com/ruby-getting-started-app-prod/web
