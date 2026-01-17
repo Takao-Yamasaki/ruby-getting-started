@@ -5,12 +5,12 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+COPY ../../Gemfile /app/Gemfile
+COPY ../../Gemfile.lock /app/Gemfile.lock
 
 RUN bundle install
 
-COPY . /app
+COPY ../.. /app
 
 # DDタグの設定
 ENV DD_SERVICE=app
