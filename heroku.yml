@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: docker/prod/Dockerfile
+run:
+  web: bash -c "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"
