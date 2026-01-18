@@ -1,3 +1,4 @@
+# NOTE: Docker Hubで使用するDockerfile
 FROM ruby:3.4
 
 RUN apt-get update -qq && \

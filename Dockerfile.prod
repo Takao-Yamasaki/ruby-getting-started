@@ -1,3 +1,4 @@
+# NOTE: heroku.ymlで使用するDockerfile
 FROM ruby:3.4
 
 RUN apt-get update -qq && \
@@ -12,7 +13,8 @@ RUN bundle install
 
 COPY . /app
 
+# TODO: datadog使用する時にコメントアウト解除すること
 # DDタグの設定
-ENV DD_SERVICE=app
-ENV DD_ENV=prod
-ENV DD_VERSION=1.0
+# ENV DD_SERVICE=app
+# ENV DD_ENV=prod
+# ENV DD_VERSION=1.0
