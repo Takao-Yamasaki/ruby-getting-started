@@ -2,7 +2,7 @@ name: CI to Docker Hub
 
 on:
   push:
-    branches: [ main, add-docker-prod ]
+    branches: [ main, add-docker-prod, add-circleci ]
 
 jobs:
   ci:

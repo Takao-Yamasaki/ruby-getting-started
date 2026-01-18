@@ -18,3 +18,10 @@ COPY ../.. /app
 # ENV DD_SERVICE=app
 # ENV DD_ENV=prod
 # ENV DD_VERSION=1.0
+
+# 本番環境設定
+ENV RAILS_ENV=production
+ENV RACK_ENV=production
+
+# HerokuのPORT環境変数を使用し、本番環境で起動
+CMD ["bash", "-c", "bundle exec puma -C config/puma.rb"]
