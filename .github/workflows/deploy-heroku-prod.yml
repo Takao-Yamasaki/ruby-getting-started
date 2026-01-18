@@ -3,11 +3,12 @@ name: Deploy to Heroku App for prod
 on:
   push:
     branches:
-      - [main, add-heroku-actions]
+      - main
+      - add-heroku-actions
 
 jobs:
   build:
-    runs-on: ubuntu-latast
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install Heroku CLI
