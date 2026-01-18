@@ -1,3 +1,4 @@
+# NOTE: Docker Hubで使用するDockerfile
 FROM ruby:3.4
 
 RUN apt-get update -qq && \
@@ -5,14 +6,14 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+COPY ../../Gemfile /app/Gemfile
+COPY ../../Gemfile.lock /app/Gemfile.lock
 
 RUN bundle install
 
-COPY . /app
+COPY ../.. /app
 
-# TODO: Datadog導入時にコメントアウト解除
+# TODO: datadog使用する時にコメントアウト解除すること
 # DDタグの設定
 # ENV DD_SERVICE=app
 # ENV DD_ENV=prod
@@ -22,6 +23,5 @@ COPY . /app
 ENV RAILS_ENV=production
 ENV RACK_ENV=production
 
-# Railsサーバーを起動
 # HerokuのPORT環境変数を使用し、本番環境で起動
-CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rake db:migrate && bundle exec puma -C config/puma.rb"]
+CMD ["bash", "-c", "bundle exec puma -C config/puma.rb"]
