@@ -34,4 +34,5 @@ gem 'spring',        group: :development
 gem "rack-timeout", "~> 0.7.0"
 
 # Use Datadog
-gem 'ddtrace', require: 'ddtrace/auto_instrument'
+# TODO: datadogを使用するときにコメントアウト解除すること
+# gem 'ddtrace', require: 'ddtrace/auto_instrument'

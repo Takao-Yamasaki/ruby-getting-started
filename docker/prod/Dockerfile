@@ -12,7 +12,8 @@ RUN bundle install
 
 COPY ../.. /app
 
+# TODO: datadog使用する時にコメントアウト解除すること
 # DDタグの設定
-ENV DD_SERVICE=app
-ENV DD_ENV=prod
-ENV DD_VERSION=1.0
+# ENV DD_SERVICE=app
+# ENV DD_ENV=prod
+# ENV DD_VERSION=1.0
