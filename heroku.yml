@@ -1,5 +1,9 @@
 build:
   docker:
     web: Dockerfile.prod
+    # NOTE: JAWSDB_URLはCLIから設定
+    config:
+      RAILS_ENV: production
+      RACK_ENV: production
 run:
   web: bash -c "bundle exec puma -C config/puma.rb"
