@@ -13,6 +13,10 @@ RUN bundle install
 
 COPY . /app
 
+# Rails環境変数
+ENV RAILS_ENV=production
+ENV RACK_ENV=production
+
 # TODO: datadog使用する時にコメントアウト解除すること
 # DDタグの設定
 # ENV DD_SERVICE=app

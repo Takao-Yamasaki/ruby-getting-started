@@ -1,8 +1,5 @@
 build:
   docker:
     web: Dockerfile.prod
-  config:
-    RAILS_ENV: production
-    RACK_ENV: production
 run:
   web: bash -c "bundle exec puma -C config/puma.rb"
